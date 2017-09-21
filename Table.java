@@ -1,65 +1,67 @@
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Table {
-	private final int CELL_SIZE = 3;
 
-	private String[][] _table;
-	private int _rows;
-	private int _columns;
+	private String[][] dataTable;
+	private int numberOfRows;
+	private int numberOfColumns;
 
-	public Table(int rows, int columns){
-		generateTable(rows, columns);
+	public Table(int numberOfRows, int numberOfColumns, int cellSize) {
+
+		generateTable(numberOfRows, numberOfColumns, cellSize);
 	}
 
-	public void replace(int row, int column, String replacement) throws CellSizeException
-	{
+	public void replace(int rowIndex, int columnIndex, String replacement) throws CellSizeException {
+
 		if (replacement.length() != 3) {
 			throw new CellSizeException();
 		}
 
-		_table[row][column] = replacement;
+		dataTable[rowIndex][columnIndex] = replacement;
 	}
 
-	public void search(String keyword)
-	{
+	public void search(String keyword) {
+
 		boolean searchFound = false;
 
-		for (int i = 0; i < _rows; i++)
-			for (int j = 0; j < _columns; j++)
-			{
-				int occurrences = 0;
-				int fromIndex = 0;
-
-				while (true)
+		if (!keyword.equals("")) {		
+			for (int i = 0; i < numberOfRows; i++)
+				for (int j = 0; j < numberOfColumns; j++)
 				{
-					fromIndex = _table[i][j].indexOf(keyword, fromIndex) + 1;
-					if (fromIndex == 0)
-						break;					
-					searchFound = true;
-					occurrences++;
-				}
+					int occurrences = 0;
+					int fromIndex = 0;
 
-				if (occurrences > 0)
-					System.out.printf("(%d,%d): %d\n", i, j, occurrences);
-			}
+					while (true)
+					{
+						fromIndex = dataTable[i][j].indexOf(keyword, fromIndex) + 1;
+						if (fromIndex == 0)
+							break;					
+						searchFound = true;
+						occurrences++;
+					}
+
+					if (occurrences > 0)
+						System.out.printf("(%d,%d): %d\n", i, j, occurrences);
+				}
+		}
 
 		if (!searchFound)
 			System.out.println("No search found!");
 	}
 
-	public void generateTable(int rows, int columns)
-	{
-		_table = new String[rows][columns];
-		_rows = rows;
-		_columns = columns;
+	public void generateTable(int numberOfRows, int numberOfColumns, int cellSize) {
 
-		for (int i = 0; i < _rows; i++)
-			for (int j = 0; j < _columns; j++)
-				_table[i][j] = generateRandomAscii(CELL_SIZE);
+		dataTable = new String[numberOfRows][numberOfColumns];
+		this.numberOfRows = numberOfRows;
+		this.numberOfColumns = numberOfColumns;
+
+		for (int i = 0; i < numberOfRows; i++)
+			for (int j = 0; j < numberOfColumns; j++)
+				dataTable[i][j] = generateRandomAscii(cellSize);
 	}
 
-	private String generateRandomAscii(int length)
-	{
+	private String generateRandomAscii(int length) {
+
 		// 32 is space
 		// 127 is DEL (excluded)
 		StringBuilder builder = new StringBuilder();
@@ -69,15 +71,15 @@ public class Table {
 		return builder.toString();
 	}
 
-	public void print()
-	{
+	public void print() {
+
 		System.out.println("----------");
-		for (int i = 0; i < _rows; i++)
+		for (int i = 0; i < numberOfRows; i++)
 		{
-			for (int j = 0; j < _columns; j++)
+			for (int j = 0; j < numberOfColumns; j++)
 			{
-				System.out.print(_table[i][j]);
-				if (j < _columns - 1)
+				System.out.print(dataTable[i][j]);
+				if (j < numberOfColumns - 1)
 					System.out.print(" ");
 			}
 			System.out.println();			

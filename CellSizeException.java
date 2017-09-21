@@ -1,4 +1,2 @@
-public class CellSizeException extends Exception
-{
-	
+public class CellSizeException extends Exception {
 }
